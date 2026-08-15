@@ -2,428 +2,158 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>The Wholesale Ally - Live Simulator</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@800;900&family=Playfair+Display:ital,wght@1,700&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="styles.css">
+
   <style>
-    :root {
-      --primary-green: #1e392a;
-      --cream-bg: #efece6;
-      --dark-accent: #111e16;
-      --user-bubble: #1e392a;
-      --bot-bubble: #dedad0;
-      --iphone-bezel: #1a1a1b;
-      --iphone-trim: #38383a;
+    /* Strictly prevents iOS Safari from auto-zooming on input focus */
+    input[type="text"],
+    input[type="password"],
+    input[type="number"],
+    input[type="email"],
+    textarea,
+    select {
+      font-size: 16px !important;
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Segoe UI", Roboto, sans-serif;
-    }
-
-    body {
-      background-color: #0a110b;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-      color: #fff;
-      padding: 20px;
-    }
-
-    /* iPhone Modern Frame */
-    .iphone-frame {
-      width: 380px;
-      height: 780px;
-      background: var(--cream-bg);
-      border-radius: 54px;
-      border: 11px solid var(--iphone-bezel);
-      outline: 2px solid var(--iphone-trim);
-      box-shadow: 0 30px 80px rgba(0,0,0,0.85), inset 0 0 0 1px rgba(255,255,255,0.05);
-      position: relative;
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-    }
-
-    /* iOS Top Status Bar */
     .iphone-header {
-      height: 48px;
-      background: var(--primary-green);
-      color: #ffffff;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 0 22px;
-      font-size: 14px;
-      font-weight: 600;
-      z-index: 30;
-      letter-spacing: -0.2px;
+      background-color: transparent;
     }
 
-    .time-display {
-      font-size: 14px;
-      font-weight: 600;
-      width: 45px;
-    }
-
-    /* Dynamic Island */
-    .dynamic-island {
-      width: 100px;
-      height: 26px;
-      background: #000000;
-      border-radius: 20px;
-      margin-top: 4px;
-      display: flex;
-      align-items: center;
-      justify-content: flex-end;
-      padding-right: 8px;
-    }
-
-    .camera-lens {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      background: #0c0f1a;
-      border: 1px solid #1f2333;
-    }
-
-    .status-icons {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      width: 55px;
-      justify-content: flex-end;
-    }
-
-    .status-icon-svg {
-      width: 15px;
-      height: 15px;
-      fill: currentColor;
-    }
-
-    .battery-icon {
-      width: 22px;
-      height: 11px;
-      border: 1.5px solid #ffffff;
-      border-radius: 4px;
-      padding: 1px;
-      position: relative;
-      display: flex;
-      align-items: center;
-    }
-
-    .battery-icon::after {
-      content: '';
-      position: absolute;
-      right: -3.5px;
-      top: 2px;
-      width: 2px;
-      height: 4px;
-      background: #ffffff;
-      border-radius: 0 1px 1px 0;
-    }
-
-    .battery-level {
-      width: 100%;
-      height: 100%;
-      background: #ffffff;
-      border-radius: 1.5px;
-    }
-
-    /* Music Player Bar with Marquee */
+    /* Narrowed music bar with rounded borders */
     .music-bar {
-      background: #122319;
-      padding: 6px 14px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      z-index: 25;
-      border-bottom: 1px solid rgba(255,255,255,0.08);
-      gap: 10px;
-    }
-
-    .marquee-container {
-      flex: 1;
-      overflow: hidden;
-      white-space: nowrap;
-      position: relative;
-      display: flex;
-      align-items: center;
-    }
-
-    .marquee-text {
-      display: inline-block;
-      font-size: 11px;
-      font-weight: 500;
-      color: #b0c4b1;
-      animation: marquee 12s linear infinite;
-      padding-left: 100%;
-    }
-
-    @keyframes marquee {
-      0% { transform: translate(0, 0); }
-      100% { transform: translate(-100%, 0); }
-    }
-
-    .music-controls {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .music-ctrl-btn {
-      background: rgba(255, 255, 255, 0.12);
-      border: none;
-      color: var(--cream-bg);
-      cursor: pointer;
-      font-size: 11px;
-      font-weight: bold;
-      padding: 4px 8px;
-      border-radius: 10px;
-      transition: background 0.2s;
-    }
-
-    .music-ctrl-btn:hover {
-      background: rgba(255, 255, 255, 0.25);
-    }
-
-    .contact-bar {
-      background: #e5e1d8;
-      padding: 8px 14px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      border-bottom: 1px solid #ccc;
-      z-index: 20;
-    }
-
-    .contact-info {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .contact-avatar {
-      width: 38px;
-      height: 38px;
-      border-radius: 50%;
-      background: var(--primary-green);
-      color: var(--cream-bg);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: bold;
-      font-size: 15px;
-    }
-
-    .contact-details {
-      display: flex;
-      flex-direction: column;
-      text-align: left;
-    }
-
-    .contact-name {
-      font-size: 13px;
-      font-weight: 700;
-      color: var(--primary-green);
-    }
-
-    .contact-number {
-      font-size: 11px;
-      color: #666;
-    }
-
-    .nav-back-btn {
-      background: transparent;
-      border: 1px solid var(--primary-green);
-      color: var(--primary-green);
-      padding: 4px 10px;
       border-radius: 12px;
-      font-size: 11px;
-      font-weight: 700;
-      cursor: pointer;
+      margin: 0 14px;
+      width: auto;
     }
 
-    .screen {
-      flex: 1;
+    /* Role Screen Container */
+    #role-screen {
       display: flex;
       flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 24px;
-      text-align: center;
-      color: var(--primary-green);
-      overflow: hidden;
-    }
-
-    .hidden { display: none !important; }
-
-    .passcode-title { font-size: 18px; margin-bottom: 12px; font-weight: 700; }
-    .passcode-dots { font-size: 28px; letter-spacing: 8px; margin-bottom: 20px; height: 35px; }
-    .keypad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
-    .key {
-      width: 65px;
-      height: 65px;
-      border-radius: 50%;
-      background: var(--primary-green);
-      color: var(--cream-bg);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 22px;
-      font-weight: 600;
-      cursor: pointer;
-      user-select: none;
-    }
-
-    .section-title { font-size: 15px; font-weight: 700; margin-bottom: 12px; }
-    .btn-group { width: 100%; display: flex; flex-direction: column; gap: 10px; }
-    
-    .role-btn, .mood-btn {
-      width: 100%;
-      padding: 13px;
-      border: 2px solid var(--primary-green);
-      border-radius: 25px;
-      background: var(--primary-green);
-      color: var(--cream-bg);
-      font-size: 15px;
-      font-weight: 600;
-      cursor: pointer;
-    }
-
-    .mood-btn {
-      background: transparent;
-      color: var(--primary-green);
-    }
-
-    .mood-btn.selected {
-      background: var(--primary-green);
-      color: var(--cream-bg);
-    }
-
-    .chat-container {
-      width: 100%;
+      justify-content: space-between;
       height: 100%;
-      display: flex;
-      flex-direction: column;
+      padding: 10px 14px 6px 14px;
+      box-sizing: border-box;
     }
 
-    .chat-box {
-      flex: 1;
-      overflow-y: auto;
+    /* 1. Header Title at the Top (Shifted Down Slightly) */
+    .screen-header-title {
+      text-align: center;
+      margin-top: 18px; /* Brought down away from music bar */
+      margin-bottom: 2px;
+    }
+
+    .title-livemock {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 23px;
+      font-weight: 900;
+      color: #FFFFFF;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+    }
+
+    .title-simulator {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 25px;
+      font-weight: 700;
+      color: #d4af37;
+      margin-left: 4px;
+    }
+
+    /* 2. Middle Practice Options Section */
+    .middle-role-section {
+      width: 100%;
+      margin-top: 2px;
+      margin-bottom: 2px;
+    }
+
+    .section-title {
+      font-size: 12.5px;
+      margin-bottom: 8px;
+      text-align: center;
+      opacity: 0.9;
+    }
+
+    .btn-group {
       display: flex;
       flex-direction: column;
       gap: 10px;
-      padding: 10px 0;
-      scroll-behavior: smooth;
     }
 
-    .message {
-      max-width: 84%;
-      padding: 10px 14px;
-      border-radius: 18px;
-      font-size: 13px;
-      line-height: 1.4;
-      text-align: left;
-      word-wrap: break-word;
-    }
-
-    .message.bot {
-      background: var(--bot-bubble);
-      color: #111;
-      align-self: flex-start;
-      border-bottom-left-radius: 4px;
-    }
-
-    .message.user {
-      background: var(--user-bubble);
-      color: var(--cream-bg);
-      align-self: flex-end;
-      border-bottom-right-radius: 4px;
-    }
-
-    .message.system {
-      background: #d4edda;
-      color: #155724;
-      align-self: center;
-      font-weight: bold;
-      font-size: 12px;
-      text-align: center;
-      max-width: 95%;
-    }
-
-    .message.system-fail {
-      background: #f8d7da;
-      color: #721c24;
-      align-self: center;
-      font-weight: bold;
-      font-size: 12px;
-      text-align: center;
-      max-width: 95%;
-    }
-
-    .chat-input-area {
+    /* Option Cards */
+    .role-btn {
+      padding: 13px 16px !important;
+      min-height: 62px;
       display: flex;
-      gap: 6px;
-      padding-top: 8px;
-      border-top: 1px solid #ccc;
-    }
-
-    .chat-input-area input {
-      flex: 1;
-      padding: 10px 14px;
-      border-radius: 20px;
-      border: 1px solid #bbb;
-      outline: none;
-      font-size: 13px;
-      background: #fff;
-    }
-
-    .chat-input-area input:disabled {
-      background: #e0e0e0;
-      cursor: not-allowed;
-    }
-
-    .chat-input-area button {
-      padding: 0 14px;
-      border-radius: 20px;
-      border: none;
-      background: var(--primary-green);
-      color: var(--cream-bg);
-      font-weight: 600;
-      cursor: pointer;
-    }
-
-    .chat-input-area button:disabled {
-      background: #888;
-      cursor: not-allowed;
-    }
-
-    .reset-bar {
-      margin-top: 8px;
-    }
-
-    .reset-btn {
+      align-items: center;
+      box-sizing: border-box;
+      border-radius: 12px;
       width: 100%;
-      padding: 8px;
-      border-radius: 15px;
-      border: none;
-      background: var(--primary-green);
-      color: var(--cream-bg);
-      font-size: 12px;
-      font-weight: bold;
-      cursor: pointer;
     }
 
-    .branding-footer {
-      margin-top: 16px;
-      font-size: 13px;
-      color: #888;
-      letter-spacing: 1.5px;
-      font-weight: 600;
+    .role-btn-content {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      text-align: left;
+    }
+
+    .role-btn-text {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      overflow: hidden;
+    }
+
+    .role-btn-title {
+      font-size: 15px;
+      font-weight: 700;
+      line-height: 1.2;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .role-btn-subtitle {
+      font-size: 11.5px;
+      font-weight: 400;
+      opacity: 0.85;
+      line-height: 1.2;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .role-btn-emoji {
+      font-size: 24px;
+      margin-left: 10px;
+      flex-shrink: 0;
+    }
+
+    /* 3. Mood Selection Section (Shifted Upwards Closer to Options) */
+    .mood-section-container {
+      width: 100%;
+      margin-top: 6px;  /* Reduced to bring section up */
+      margin-bottom: 28px;
+    }
+
+    /* 4. Bottom Copyright Notice */
+    .in-phone-footer {
+      text-align: center;
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.6px;
+      color: #1e4620;
+      padding-bottom: 2px;
     }
   </style>
 </head>
@@ -431,7 +161,7 @@
 
   <div class="iphone-frame">
     <div class="iphone-header">
-      <span class="time-display">9:41</span>
+      <span class="time-display" id="time-display">9:41</span>
       
       <div class="dynamic-island">
         <div class="camera-lens"></div>
@@ -494,17 +224,48 @@
     </div>
 
     <div id="role-screen" class="screen hidden">
-      <div class="section-title">Choose who you want to practice with:</div>
-      <div class="btn-group">
-        <button class="role-btn" onclick="selectRole('Agent')">Listing Agent</button>
-        <button class="role-btn" onclick="selectRole('Owner')">Owner</button>
+      <div class="screen-header-title">
+        <span class="title-livemock">LiveMock</span>
+        <span class="title-simulator">Simulator</span>
       </div>
 
-      <div class="section-title" style="margin-top: 22px;">Select Mood:</div>
-      <div class="btn-group" style="flex-direction: row;">
-        <button class="mood-btn selected" id="mood-neutral" onclick="selectMood('Neutral')">Neutral</button>
-        <button class="mood-btn" id="mood-skeptical" onclick="selectMood('Skeptical')">Judgy</button>
-        <button class="mood-btn" id="mood-happy" onclick="selectMood('Happy')">Happy</button>
+      <div class="middle-role-section">
+        <div class="section-title">Choose who you want to practice with:</div>
+        
+        <div class="btn-group">
+          <button class="role-btn" onclick="selectRole('Owner')">
+            <div class="role-btn-content">
+              <div class="role-btn-text">
+                <span class="role-btn-title">Direct Property Owner</span>
+                <span class="role-btn-subtitle">Practice negotiating directly with sellers</span>
+              </div>
+              <span class="role-btn-emoji">🏡</span>
+            </div>
+          </button>
+
+          <button class="role-btn" onclick="selectRole('Agent')">
+            <div class="role-btn-content">
+              <div class="role-btn-text">
+                <span class="role-btn-title">Listing Real Estate Agent</span>
+                <span class="role-btn-subtitle">Practice pitching terms through representation</span>
+              </div>
+              <span class="role-btn-emoji">🏢</span>
+            </div>
+          </button>
+        </div>
+      </div>
+
+      <div class="mood-section-container">
+        <div class="section-title">Select Mood:</div>
+        <div class="btn-group" style="flex-direction: row;">
+          <button class="mood-btn selected" id="mood-neutral" onclick="selectMood('Neutral')">Neutral</button>
+          <button class="mood-btn" id="mood-skeptical" onclick="selectMood('Skeptical')">Judgy</button>
+          <button class="mood-btn" id="mood-happy" onclick="selectMood('Happy')">Happy</button>
+        </div>
+      </div>
+
+      <div class="in-phone-footer">
+        &copy; THEWHOLESALEALLY - ALL RIGHTS RESERVED
       </div>
     </div>
 
@@ -524,392 +285,9 @@
     </div>
   </div>
 
-  <div class="branding-footer">
-    &copy; THEWHOLESALEALLY
-  </div>
-
   <audio id="lofi-audio" loop></audio>
 
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script>
-    let enteredCode = "";
-    let selectedRole = "";
-    let selectedMood = "Neutral";
-    let isChatActive = false;
-    let stage = "GREETING";
-    let musicPlaying = false;
-    let currentPerson = {};
-    let userName = "";
-    let propertyAddress = "";
-
-    // Multi-track Playlist (Fixed & Updated Stream Links)
-    const PLAYLIST = [
-      { title: "Lofi Study Session - Deep Focus", src: "https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=lofi-study-112191.mp3" },
-      { title: "Chill Beats - Midnight Coffee", src: "https://cdn.pixabay.com/download/audio/2022/01/18/audio_d0a13f69d2.mp3?filename=chill-lofi-song-8444.mp3" },
-      { title: "Cozy Dreams - Evening Walk", src: "https://cdn.pixabay.com/download/audio/2022/10/14/audio_9939f7922d.mp3?filename=cozy-lofi-song-124436.mp3" }
-    ];
-    let currentTrackIndex = 0;
-
-    const AGENTS = [
-      { name: "Sarah Jenkins", phone: "+1 (555) 234-8901" },
-      { name: "Marcus Vance", phone: "+1 (555) 872-1143" },
-      { name: "David Ross", phone: "+1 (555) 412-9902" },
-      { name: "Rachel Adams", phone: "+1 (555) 781-6632" },
-      { name: "Jessica Alba", phone: "+1 (555) 671-8820" },
-      { name: "Brandon Cole", phone: "+1 (555) 908-3321" },
-      { name: "Elena Rostova", phone: "+1 (555) 301-4455" }
-    ];
-
-    const OWNERS = [
-      { name: "Robert Miller", phone: "+1 (555) 612-4411" },
-      { name: "Gary Thompson", phone: "+1 (555) 902-8812" },
-      { name: "Karen White", phone: "+1 (555) 314-5567" },
-      { name: "Bill Hudson", phone: "+1 (555) 810-7733" },
-      { name: "Linda Davis", phone: "+1 (555) 771-3344" }
-    ];
-
-    const SAMPLE_STREETS = ["Miller Rd", "Oak Lane", "Cedar St", "Pine Ridge Dr", "Maple Ave", "Highland Way"];
-
-    function getRandomChoice(arr) {
-      return arr[Math.floor(Math.random() * arr.length)];
-    }
-
-    function loadTrack(index) {
-      const audio = document.getElementById('lofi-audio');
-      audio.src = PLAYLIST[index].src;
-      if (musicPlaying) {
-        audio.play().catch(() => {});
-        $('#marquee-song-title').text(`🎵 Now Playing: ${PLAYLIST[index].title}`);
-        $('#play-pause-btn').text('⏸️');
-      } else {
-        $('#marquee-song-title').text(`🎵 Paused: ${PLAYLIST[index].title}`);
-        $('#play-pause-btn').text('▶️');
-      }
-    }
-
-    function toggleMusic() {
-      const audio = document.getElementById('lofi-audio');
-      if (!audio.src) {
-        audio.src = PLAYLIST[currentTrackIndex].src;
-      }
-      if (musicPlaying) {
-        audio.pause();
-        musicPlaying = false;
-        $('#marquee-song-title').text(`🎵 Paused: ${PLAYLIST[currentTrackIndex].title}`);
-        $('#play-pause-btn').text('▶️');
-      } else {
-        audio.play().catch(() => {});
-        musicPlaying = true;
-        $('#marquee-song-title').text(`🎵 Now Playing: ${PLAYLIST[currentTrackIndex].title}`);
-        $('#play-pause-btn').text('⏸️');
-      }
-    }
-
-    function nextSong() {
-      currentTrackIndex = (currentTrackIndex + 1) % PLAYLIST.length;
-      loadTrack(currentTrackIndex);
-    }
-
-    function prevSong() {
-      currentTrackIndex = (currentTrackIndex - 1 + PLAYLIST.length) % PLAYLIST.length;
-      loadTrack(currentTrackIndex);
-    }
-
-    function pressKey(num) {
-      if (enteredCode.length < 4) {
-        enteredCode += num;
-        let dots = '•'.repeat(enteredCode.length) + '•'.repeat(4 - enteredCode.length);
-        $('#passcode-display').text(dots);
-      }
-      if (enteredCode.length === 4) {
-        if (enteredCode === "2026") {
-          setTimeout(() => {
-            $('#passcode-screen').addClass('hidden');
-            $('#role-screen').removeClass('hidden');
-          }, 200);
-        } else {
-          alert("Incorrect Passcode. Enter 2026.");
-          enteredCode = "";
-          $('#passcode-display').text('••••');
-        }
-      }
-    }
-
-    function selectMood(mood) {
-      selectedMood = mood;
-      $('.mood-btn').removeClass('selected');
-      $(`#mood-${mood.toLowerCase()}`).addClass('selected');
-    }
-
-    function selectRole(role) {
-      selectedRole = role;
-      stage = "GREETING";
-      userName = "";
-      propertyAddress = "";
-      isChatActive = true;
-
-      const pool = role === 'Agent' ? AGENTS : OWNERS;
-      currentPerson = getRandomChoice(pool);
-
-      $('#contact-avatar').text(currentPerson.name.charAt(0));
-      $('#contact-name').text(`${currentPerson.name} (${role})`);
-      $('#contact-number').text(currentPerson.phone);
-
-      $('#role-screen').addClass('hidden');
-      $('#contact-bar').removeClass('hidden');
-      $('#chat-screen').removeClass('hidden');
-      $('#chat-box').empty();
-      $('#reset-container').addClass('hidden');
-      enableChatInput(true);
-
-      // 50% chance Wholesaler reaches out first, 50% contact sends an incoming message first
-      const isIncoming = Math.random() < 0.5;
-
-      if (isIncoming) {
-        const randomStreet = getRandomChoice(SAMPLE_STREETS);
-        propertyAddress = randomStreet;
-        stage = "QUALIFY";
-
-        if (role === 'Owner') {
-          const ownerInboundMessages = [
-            `hey got your letter regarding my land on ${randomStreet}. wasn't actively looking to sell but what are you offering?`,
-            `saw your text about my piece on ${randomStreet}. you interested in making a cash offer on it?`,
-            `got your card in the mail for my plot on ${randomStreet}. who is this and what's your offer?`
-          ];
-          addMessage(getRandomChoice(ownerInboundMessages), 'bot');
-        } else {
-          const agentInboundMessages = [
-            `Good afternoon! Reaching back out regarding our property on ${randomStreet}. Are you an unrepresented buyer or looking to submit an offer?`,
-            `Hi there! Thanks for your inquiry on ${randomStreet}. Are you looking to make an offer directly on this listing?`,
-            `Hello! Following up on your message regarding ${randomStreet}. What terms were you interested in discussing?`
-          ];
-          addMessage(getRandomChoice(agentInboundMessages), 'bot');
-        }
-      } else {
-        // Wholesaler initiates
-        addMessage(`[System: You are reaching out to ${currentPerson.name} (${role}). Send your initial opening message!]`, 'system');
-      }
-    }
-
-    function goToMenu() {
-      $('#chat-screen').addClass('hidden');
-      $('#contact-bar').addClass('hidden');
-      $('#role-screen').removeClass('hidden');
-      enteredCode = "";
-      $('#passcode-display').text('••••');
-    }
-
-    function addMessage(text, sender) {
-      const msgClass = sender === 'bot' ? 'bot' : sender === 'user' ? 'user' : sender === 'system-fail' ? 'system-fail' : 'system';
-      $('#chat-box').append(`<div class="message ${msgClass}">${text}</div>`);
-      const chatBox = document.getElementById('chat-box');
-      chatBox.scrollTop = chatBox.scrollHeight;
-    }
-
-    function enableChatInput(enabled) {
-      $('#user-input').prop('disabled', !enabled);
-      $('#send-btn').prop('disabled', !enabled);
-      if (enabled) $('#user-input').focus();
-    }
-
-    function handleKeyPress(e) {
-      if (e.key === 'Enter') sendMessage();
-    }
-
-    function parseName(input) {
-      const match = input.match(/(?:this is|my name is|i'm|im)\s+([a-zA-Z]+)/i);
-      if (match && match[1]) {
-        const word = match[1].toLowerCase();
-        const excluded = ['sorry', 'sure', 'thanks', 'thank', 'okay', 'ok', 'interested', 'calling', 'looking', 'offering'];
-        if (!excluded.includes(word)) {
-          return match[1].charAt(0).toUpperCase() + match[1].slice(1);
-        }
-      }
-      return null;
-    }
-
-    function parseAddress(input) {
-      const match = input.match(/\d+\s+[a-zA-Z0-9\s,]+(?:street|st|road|rd|avenue|ave|drive|dr|lane|ln|boulevard|blvd|way|ct|court|fl)/i);
-      return match ? match[0] : null;
-    }
-
-    function hasSpecificTerms(input) {
-      return /\$|\d+k|\d+,\d+|\d+\s*days|\d+\s*day|earnest|\bemd\b/i.test(input);
-    }
-
-    function sendMessage() {
-      if (!isChatActive) return;
-      const input = $('#user-input').val().trim();
-      if (!input) return;
-
-      addMessage(input, 'user');
-      $('#user-input').val('');
-
-      const capturedName = parseName(input);
-      if (capturedName) userName = capturedName;
-
-      const capturedAddr = parseAddress(input);
-      if (capturedAddr) propertyAddress = capturedAddr;
-
-      enableChatInput(false);
-
-      setTimeout(() => {
-        processConversationTurn(input);
-      }, 800);
-    }
-
-    function processConversationTurn(rawInput) {
-      const input = rawInput.toLowerCase();
-      let responses = [];
-      const greetingName = userName ? ` ${userName}` : "";
-
-      // Skeptical Mood Trigger for Lowball
-      if (selectedMood === 'Skeptical' && (input.includes('low') || input.includes('cheap') || input.includes('discount'))) {
-        addMessage("Read 9:42 PM", 'system-fail');
-        addMessage("🔴 [LEFT ON READ] Contact stopped responding due to aggressive lowball tone without rapport.", 'system-fail');
-        endChat();
-        return;
-      }
-
-      // ==========================================
-      // OWNER DIALECT ROUTING
-      // ==========================================
-      if (selectedRole === 'Owner') {
-        if (stage === "GREETING") {
-          if (propertyAddress) {
-            const ownerGreeting = [
-              `hey${greetingName}, got your message about ${propertyAddress}. yeah i still got it, what are you offering?`,
-              `yeah${greetingName}, that piece on ${propertyAddress} is available. you looking to buy or what?`
-            ];
-            responses.push(getRandomChoice(ownerGreeting));
-            stage = "QUALIFY";
-          } else {
-            responses.push(`hey got your text${greetingName}. which piece of land or plot were you asking about?`);
-          }
-        }
-        else if (stage === "QUALIFY") {
-          if (!hasSpecificTerms(input)) {
-            responses.push(`wasn't actively looking to let it go, but shoot me an offer. what cash price and timeline you thinking?`);
-            stage = "GET_TERMS";
-          } else {
-            stage = "EVALUATE_TERMS";
-          }
-        }
-        else if (stage === "GET_TERMS") {
-          if (hasSpecificTerms(input)) {
-            stage = "EVALUATE_TERMS";
-          } else {
-            responses.push(`i need real numbers first. what's your cash offer price and deposit?`);
-          }
-        }
-
-        if (stage === "EVALUATE_TERMS") {
-          let acceptThreshold = selectedMood === 'Happy' ? 0.8 : selectedMood === 'Skeptical' ? 0.25 : 0.5;
-          const keepsHardNo = (input.includes('100') || input.includes('no emd') || input.includes('90 days'));
-          const isAgreed = Math.random() < acceptThreshold && !keepsHardNo;
-
-          if (isAgreed) {
-            responses.push(`fair enough, i can work with that price. what email should i send the contract info to?`);
-            stage = "FINAL";
-          } else {
-            responses.push(`that number's a bit low for my dirt. i'd need at least $2,500 down in earnest money to move on it. can you do that?`);
-            stage = "COUNTER";
-          }
-        }
-        else if (stage === "COUNTER") {
-          if (input.includes('yes') || input.includes('agree') || input.includes('ok') || input.includes('deal') || input.includes('sure') || input.includes('can do')) {
-            responses.push(`alright sounds good. drop your email address and we'll get it on paper.`);
-            stage = "FINAL";
-          } else {
-            addMessage(`nah, that doesn't work for me. i'll just hold onto the land.`, 'bot');
-            addMessage("🔴 [TERMS MISALIGNED - NO DEAL]", 'system-fail');
-            endChat();
-            return;
-          }
-        }
-        else if (stage === "FINAL") {
-          addMessage(`got it, sent it over to your email. thanks${greetingName}.`, 'bot');
-          addMessage("🟢 [DEAL SIGNED] Contract locked in!", 'system');
-          endChat();
-          return;
-        }
-
-        addMessage(responses.join(" "), 'bot');
-        enableChatInput(true);
-        return;
-      }
-
-      // ==========================================
-      // AGENT DIALECT ROUTING (Standard Formal)
-      // ==========================================
-      if (input.includes('how are you') || input.includes("how's it going")) {
-        responses.push("I'm doing well, thanks for asking!");
-      }
-
-      if (stage === "GREETING") {
-        if (propertyAddress) {
-          responses.push(`Yes${greetingName}, ${propertyAddress} is still available! Are you an unrepresented buyer or working with an agent?`);
-          stage = "QUALIFY";
-        } else {
-          responses.push(`Thanks for reaching out${greetingName}! Which property or address are you calling regarding?`);
-        }
-      }
-      else if (stage === "QUALIFY") {
-        if (!hasSpecificTerms(input)) {
-          responses.push(`Understood. Could you lay out your specific offer details? (Offer price, earnest money deposit, and inspection window)`);
-          stage = "GET_TERMS";
-        } else {
-          stage = "EVALUATE_TERMS";
-        }
-      }
-      else if (stage === "GET_TERMS") {
-        if (hasSpecificTerms(input)) {
-          stage = "EVALUATE_TERMS";
-        } else {
-          responses.push(`Before we move forward, I'll need your proposed offer price, EMD amount, and desired inspection period.`);
-        }
-      }
-
-      if (stage === "EVALUATE_TERMS") {
-        let acceptThreshold = selectedMood === 'Happy' ? 0.8 : selectedMood === 'Skeptical' ? 0.25 : 0.5;
-        const keepsHardNo = (input.includes('100') || input.includes('no emd') || input.includes('90 days'));
-        const isAgreed = Math.random() < acceptThreshold && !keepsHardNo;
-
-        if (isAgreed) {
-          responses.push(`That sounds like a fair deal! The seller is open to those terms. What email address should I send the paperwork to?`);
-          stage = "FINAL";
-        } else {
-          responses.push(`The seller reviewed your numbers, but prefers at least $2,500 EMD and a 14 to 21-day close. Would you be willing to adjust to those terms?`);
-          stage = "COUNTER";
-        }
-      }
-      else if (stage === "COUNTER") {
-        if (input.includes('yes') || input.includes('agree') || input.includes('ok') || input.includes('deal') || input.includes('sure')) {
-          responses.push(`Perfect! Send over your preferred email address and I'll send the contract right over.`);
-          stage = "FINAL";
-        } else {
-          addMessage(`I understand. Unfortunately, our terms don't align at this time. Best of luck with your search!`, 'bot');
-          addMessage("🔴 [TERMS MISALIGNED - NO DEAL]", 'system-fail');
-          endChat();
-          return;
-        }
-      }
-      else if (stage === "FINAL") {
-        addMessage(`Thanks${greetingName}! Contract dispatched to your email. Great working with you.`, 'bot');
-        addMessage("🟢 [DEAL SIGNED] Agreement finalized!", 'system');
-        endChat();
-        return;
-      }
-
-      addMessage(responses.join(" "), 'bot');
-      enableChatInput(true);
-    }
-
-    function endChat() {
-      isChatActive = false;
-      enableChatInput(false);
-      $('#reset-container').removeClass('hidden');
-    }
-  </script>
+  <script src="script.js"></script>
 </body>
 </html>
